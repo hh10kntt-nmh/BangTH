@@ -1,0 +1,922 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>118 Elements Challenge</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Nunito:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    * {
+      font-family: 'Nunito', sans-serif;
+    }
+    
+    .font-display {
+      font-family: 'Orbitron', monospace;
+    }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    }
+    
+    .card-gradient {
+      background: linear-gradient(145deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+      backdrop-filter: blur(10px);
+    }
+    
+    .glow-correct {
+      animation: glowCorrect 0.5s ease-out;
+      box-shadow: 0 0 30px rgba(34, 197, 94, 0.6);
+    }
+    
+    .glow-wrong {
+      animation: glowWrong 0.5s ease-out;
+      box-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
+    }
+    
+    @keyframes glowCorrect {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes glowWrong {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+      100% { transform: translateX(0); }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.4s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .element-card {
+      transition: all 0.3s ease;
+    }
+    
+    .element-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+    
+    .option-btn {
+      transition: all 0.2s ease;
+    }
+    
+    .option-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+    
+    .periodic-cell {
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    
+    .periodic-cell:hover {
+      transform: scale(1.1);
+      z-index: 10;
+    }
+    
+    .progress-bar {
+      transition: width 0.3s ease;
+    }
+    
+    /* Periodic table category colors */
+    .cat-alkali { background: linear-gradient(135deg, #ff6b6b, #ee5a5a); }
+    .cat-alkaline { background: linear-gradient(135deg, #ffa502, #ff8c00); }
+    .cat-transition { background: linear-gradient(135deg, #ffd32a, #f9ca24); }
+    .cat-post-transition { background: linear-gradient(135deg, #7bed9f, #26de81); }
+    .cat-metalloid { background: linear-gradient(135deg, #70a1ff, #5352ed); }
+    .cat-nonmetal { background: linear-gradient(135deg, #a29bfe, #6c5ce7); }
+    .cat-halogen { background: linear-gradient(135deg, #fd79a8, #e84393); }
+    .cat-noble { background: linear-gradient(135deg, #74b9ff, #0984e3); }
+    .cat-lanthanide { background: linear-gradient(135deg, #55efc4, #00b894); }
+    .cat-actinide { background: linear-gradient(135deg, #ff7675, #d63031); }
+    
+    .speaker-btn {
+      transition: all 0.2s ease;
+    }
+    
+    .speaker-btn:hover {
+      transform: scale(1.1);
+    }
+    
+    .speaker-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.3);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255,255,255,0.5);
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full gradient-bg text-white overflow-auto">
+  <div id="app" class="min-h-full w-full"><!-- Main Menu -->
+   <div id="mainMenu" class="min-h-full flex flex-col items-center justify-center p-4">
+    <div class="text-center fade-in">
+     <div class="mb-2"><span class="text-6xl">⚗️</span>
+     </div>
+     <h1 id="gameTitle" class="font-display text-3xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">118 Elements Challenge</h1>
+     <p class="text-lg md:text-xl text-gray-300 mb-1">Learn by Symbol &amp; Name</p>
+     <p class="text-sm text-gray-400 mb-8">Thiết kế bởi GV: Nguyễn Mạnh Hưng - Trường THPT Trại Cau</p>
+     <div class="grid gap-4 max-w-md mx-auto"><button onclick="startGame('symbolToName')" class="option-btn bg-gradient-to-r from-cyan-500 to-blue-600 px-8 py-4 rounded-2xl font-bold text-lg shadow-lg"> 🔤 Symbol to Name </button> <button onclick="startGame('nameToSymbol')" class="option-btn bg-gradient-to-r from-purple-500 to-pink-600 px-8 py-4 rounded-2xl font-bold text-lg shadow-lg"> 🧪 Name to Symbol </button> <button onclick="startGame('typing')" class="option-btn bg-gradient-to-r from-green-500 to-teal-600 px-8 py-4 rounded-2xl font-bold text-lg shadow-lg"> ⌨️ Typing Challenge </button> <button onclick="showPeriodicTable()" class="option-btn bg-gradient-to-r from-orange-500 to-red-600 px-8 py-4 rounded-2xl font-bold text-lg shadow-lg"> 📊 Periodic Table </button>
+     </div>
+    </div>
+   </div><!-- Game Screen -->
+   <div id="gameScreen" class="min-h-full flex flex-col p-4 hidden"><!-- Header -->
+    <div class="flex flex-wrap justify-between items-center mb-4 gap-2"><button onclick="showMainMenu()" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition"> ← Back </button>
+     <div class="flex items-center gap-4">
+      <div class="bg-white/10 px-4 py-2 rounded-xl"><span class="text-gray-300">Score:</span> <span id="score" class="font-bold text-cyan-400 ml-1">0</span>
+      </div>
+      <div class="bg-white/10 px-4 py-2 rounded-xl"><span class="text-gray-300">Time:</span> <span id="timer" class="font-bold text-purple-400 ml-1">0:00</span>
+      </div>
+     </div>
+    </div><!-- Progress -->
+    <div class="mb-6">
+     <div class="flex justify-between text-sm mb-2"><span id="questionNum" class="text-gray-300">Question 1/20</span> <span id="modeLabel" class="text-cyan-400 font-bold"></span>
+     </div>
+     <div class="h-3 bg-white/10 rounded-full overflow-hidden">
+      <div id="progressBar" class="progress-bar h-full bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full" style="width: 0%"></div>
+     </div>
+    </div><!-- Question Card -->
+    <div class="flex-1 flex items-center justify-center">
+     <div id="questionCard" class="card-gradient rounded-3xl p-6 md:p-8 w-full max-w-2xl element-card"><!-- Question content will be injected here -->
+     </div>
+    </div>
+   </div><!-- Results Screen -->
+   <div id="resultsScreen" class="min-h-full flex flex-col items-center justify-center p-4 hidden">
+    <div class="card-gradient rounded-3xl p-8 max-w-md w-full text-center fade-in">
+     <div class="text-6xl mb-4">
+      🏆
+     </div>
+     <h2 class="font-display text-3xl font-bold mb-6 text-cyan-400">Game Complete!</h2>
+     <div class="space-y-4 mb-8">
+      <div class="bg-white/10 rounded-2xl p-4">
+       <div class="text-gray-300">
+        Final Score
+       </div>
+       <div id="finalScore" class="text-4xl font-bold text-green-400">
+        0/20
+       </div>
+      </div>
+      <div class="bg-white/10 rounded-2xl p-4">
+       <div class="text-gray-300">
+        Time
+       </div>
+       <div id="finalTime" class="text-2xl font-bold text-purple-400">
+        0:00
+       </div>
+      </div>
+      <div class="bg-white/10 rounded-2xl p-4">
+       <div class="text-gray-300">
+        Accuracy
+       </div>
+       <div id="accuracy" class="text-2xl font-bold text-cyan-400">
+        0%
+       </div>
+      </div>
+     </div>
+     <div class="grid gap-3"><button onclick="restartGame()" class="option-btn bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 rounded-xl font-bold shadow-lg"> 🔄 Play Again </button> <button onclick="showMainMenu()" class="option-btn bg-white/10 hover:bg-white/20 px-6 py-3 rounded-xl font-bold transition"> 🏠 Main Menu </button>
+     </div>
+    </div>
+   </div><!-- Periodic Table Screen -->
+   <div id="periodicScreen" class="min-h-full flex flex-col p-4 hidden">
+    <div class="flex flex-wrap justify-between items-center mb-4 gap-2"><button onclick="showMainMenu()" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition"> ← Back </button>
+     <h2 class="font-display text-xl md:text-2xl font-bold text-cyan-400">Periodic Table</h2>
+     <div class="flex gap-2"><select id="filterGroup" onchange="filterElements()" class="bg-white/10 px-3 py-2 rounded-xl text-sm"> <option value="all">All Groups</option> <option value="alkali">Alkali Metals</option> <option value="alkaline">Alkaline Earth</option> <option value="transition">Transition Metals</option> <option value="post-transition">Post-Transition</option> <option value="metalloid">Metalloids</option> <option value="nonmetal">Nonmetals</option> <option value="halogen">Halogens</option> <option value="noble">Noble Gases</option> <option value="lanthanide">Lanthanides</option> <option value="actinide">Actinides</option> </select>
+     </div>
+    </div><!-- Periodic Table Grid -->
+    <div class="flex-1 overflow-auto">
+     <div id="periodicGrid" class="min-w-max"><!-- Grid will be generated by JavaScript -->
+     </div>
+    </div><!-- Element Detail Modal -->
+    <div id="elementModal" class="fixed inset-0 bg-black/70 flex items-center justify-center p-4 hidden z-50">
+     <div class="card-gradient rounded-3xl p-6 max-w-sm w-full fade-in overflow-y-auto max-h-screen">
+      <div id="modalContent"></div><button onclick="closeModal()" class="mt-4 w-full bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition"> Close </button>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    // ========================================
+    // COMPLETE DATA: 118 ELEMENTS WITH CONFIGURATIONS
+    // ========================================
+    const elements = [
+      { number: 1, symbol: "H", name: "Hydrogen", ipa: "/ˈhaɪ.drə.dʒən/", category: "nonmetal", group: 1, period: 1, config: "1s¹" },
+      { number: 2, symbol: "He", name: "Helium", ipa: "/ˈhiː.li.əm/", category: "noble", group: 18, period: 1, config: "1s²" },
+      { number: 3, symbol: "Li", name: "Lithium", ipa: "/ˈlɪθ.i.əm/", category: "alkali", group: 1, period: 2, config: "1s² 2s¹" },
+      { number: 4, symbol: "Be", name: "Beryllium", ipa: "/bəˈrɪl.i.əm/", category: "alkaline", group: 2, period: 2, config: "1s² 2s²" },
+      { number: 5, symbol: "B", name: "Boron", ipa: "/bɔːr.ɒn/", category: "metalloid", group: 13, period: 2, config: "1s² 2s² 2p¹" },
+      { number: 6, symbol: "C", name: "Carbon", ipa: "/ˈkɑːr.bən/", category: "nonmetal", group: 14, period: 2, config: "1s² 2s² 2p²" },
+      { number: 7, symbol: "N", name: "Nitrogen", ipa: "/ˈnaɪ.trə.dʒən/", category: "nonmetal", group: 15, period: 2, config: "1s² 2s² 2p³" },
+      { number: 8, symbol: "O", name: "Oxygen", ipa: "/ˈɒk.sɪ.dʒən/", category: "nonmetal", group: 16, period: 2, config: "1s² 2s² 2p⁴" },
+      { number: 9, symbol: "F", name: "Fluorine", ipa: "/ˈflʊər.iːn/", category: "halogen", group: 17, period: 2, config: "1s² 2s² 2p⁵" },
+      { number: 10, symbol: "Ne", name: "Neon", ipa: "/ˈniː.ɒn/", category: "noble", group: 18, period: 2, config: "1s² 2s² 2p⁶" },
+      { number: 11, symbol: "Na", name: "Sodium", ipa: "/ˈsəʊ.di.əm/", category: "alkali", group: 1, period: 3, config: "[Ne] 3s¹" },
+      { number: 12, symbol: "Mg", name: "Magnesium", ipa: "/mæɡˈniː.zi.əm/", category: "alkaline", group: 2, period: 3, config: "[Ne] 3s²" },
+      { number: 13, symbol: "Al", name: "Aluminum", ipa: "/əˈluː.mɪ.nəm/", category: "post-transition", group: 13, period: 3, config: "[Ne] 3s² 3p¹" },
+      { number: 14, symbol: "Si", name: "Silicon", ipa: "/ˈsɪl.ɪ.kən/", category: "metalloid", group: 14, period: 3, config: "[Ne] 3s² 3p²" },
+      { number: 15, symbol: "P", name: "Phosphorus", ipa: "/ˈfɒs.fər.əs/", category: "nonmetal", group: 15, period: 3, config: "[Ne] 3s² 3p³" },
+      { number: 16, symbol: "S", name: "Sulfur", ipa: "/ˈsʌl.fər/", category: "nonmetal", group: 16, period: 3, config: "[Ne] 3s² 3p⁴" },
+      { number: 17, symbol: "Cl", name: "Chlorine", ipa: "/ˈklɔːr.iːn/", category: "halogen", group: 17, period: 3, config: "[Ne] 3s² 3p⁵" },
+      { number: 18, symbol: "Ar", name: "Argon", ipa: "/ˈɑːr.ɡɒn/", category: "noble", group: 18, period: 3, config: "[Ne] 3s² 3p⁶" },
+      { number: 19, symbol: "K", name: "Potassium", ipa: "/pəˈtæs.i.əm/", category: "alkali", group: 1, period: 4, config: "[Ar] 4s¹" },
+      { number: 20, symbol: "Ca", name: "Calcium", ipa: "/ˈkæl.si.əm/", category: "alkaline", group: 2, period: 4, config: "[Ar] 4s²" },
+      { number: 21, symbol: "Sc", name: "Scandium", ipa: "/ˈskæn.di.əm/", category: "transition", group: 3, period: 4, config: "[Ar] 3d¹ 4s²" },
+      { number: 22, symbol: "Ti", name: "Titanium", ipa: "/taɪˈteɪ.ni.əm/", category: "transition", group: 4, period: 4, config: "[Ar] 3d² 4s²" },
+      { number: 23, symbol: "V", name: "Vanadium", ipa: "/vəˈneɪ.di.əm/", category: "transition", group: 5, period: 4, config: "[Ar] 3d³ 4s²" },
+      { number: 24, symbol: "Cr", name: "Chromium", ipa: "/ˈkrəʊ.mi.əm/", category: "transition", group: 6, period: 4, config: "[Ar] 3d⁵ 4s¹" },
+      { number: 25, symbol: "Mn", name: "Manganese", ipa: "/ˈmæŋ.ɡə.niːz/", category: "transition", group: 7, period: 4, config: "[Ar] 3d⁵ 4s²" },
+      { number: 26, symbol: "Fe", name: "Iron", ipa: "/ˈaɪ.ərn/", category: "transition", group: 8, period: 4, config: "[Ar] 3d⁶ 4s²" },
+      { number: 27, symbol: "Co", name: "Cobalt", ipa: "/ˈkəʊ.bɔːlt/", category: "transition", group: 9, period: 4, config: "[Ar] 3d⁷ 4s²" },
+      { number: 28, symbol: "Ni", name: "Nickel", ipa: "/ˈnɪk.əl/", category: "transition", group: 10, period: 4, config: "[Ar] 3d⁸ 4s²" },
+      { number: 29, symbol: "Cu", name: "Copper", ipa: "/ˈkɒp.ər/", category: "transition", group: 11, period: 4, config: "[Ar] 3d¹⁰ 4s¹" },
+      { number: 30, symbol: "Zn", name: "Zinc", ipa: "/zɪŋk/", category: "transition", group: 12, period: 4, config: "[Ar] 3d¹⁰ 4s²" },
+      { number: 31, symbol: "Ga", name: "Gallium", ipa: "/ˈɡæl.i.əm/", category: "post-transition", group: 13, period: 4, config: "[Ar] 3d¹⁰ 4s² 4p¹" },
+      { number: 32, symbol: "Ge", name: "Germanium", ipa: "/dʒɜːˈmeɪ.ni.əm/", category: "metalloid", group: 14, period: 4, config: "[Ar] 3d¹⁰ 4s² 4p²" },
+      { number: 33, symbol: "As", name: "Arsenic", ipa: "/ˈɑːr.sən.ɪk/", category: "metalloid", group: 15, period: 4, config: "[Ar] 3d¹⁰ 4s² 4p³" },
+      { number: 34, symbol: "Se", name: "Selenium", ipa: "/sɪˈliː.ni.əm/", category: "nonmetal", group: 16, period: 4, config: "[Ar] 3d¹⁰ 4s² 4p⁴" },
+      { number: 35, symbol: "Br", name: "Bromine", ipa: "/ˈbrəʊ.miːn/", category: "halogen", group: 17, period: 4, config: "[Ar] 3d¹⁰ 4s² 4p⁵" },
+      { number: 36, symbol: "Kr", name: "Krypton", ipa: "/ˈkrɪp.tɒn/", category: "noble", group: 18, period: 4, config: "[Ar] 3d¹⁰ 4s² 4p⁶" },
+      { number: 37, symbol: "Rb", name: "Rubidium", ipa: "/ruːˈbɪd.i.əm/", category: "alkali", group: 1, period: 5, config: "[Kr] 5s¹" },
+      { number: 38, symbol: "Sr", name: "Strontium", ipa: "/ˈstrɒn.ti.əm/", category: "alkaline", group: 2, period: 5, config: "[Kr] 5s²" },
+      { number: 39, symbol: "Y", name: "Yttrium", ipa: "/ˈɪt.ri.əm/", category: "transition", group: 3, period: 5, config: "[Kr] 4d¹ 5s²" },
+      { number: 40, symbol: "Zr", name: "Zirconium", ipa: "/zɜːˈkəʊ.ni.əm/", category: "transition", group: 4, period: 5, config: "[Kr] 4d² 5s²" },
+      { number: 41, symbol: "Nb", name: "Niobium", ipa: "/naɪˈəʊ.bi.əm/", category: "transition", group: 5, period: 5, config: "[Kr] 4d⁴ 5s¹" },
+      { number: 42, symbol: "Mo", name: "Molybdenum", ipa: "/məˈlɪb.dən.əm/", category: "transition", group: 6, period: 5, config: "[Kr] 4d⁵ 5s¹" },
+      { number: 43, symbol: "Tc", name: "Technetium", ipa: "/tekˈniː.ʃi.əm/", category: "transition", group: 7, period: 5, config: "[Kr] 4d⁵ 5s²" },
+      { number: 44, symbol: "Ru", name: "Ruthenium", ipa: "/ruːˈθiː.ni.əm/", category: "transition", group: 8, period: 5, config: "[Kr] 4d⁷ 5s¹" },
+      { number: 45, symbol: "Rh", name: "Rhodium", ipa: "/ˈrəʊ.di.əm/", category: "transition", group: 9, period: 5, config: "[Kr] 4d⁸ 5s¹" },
+      { number: 46, symbol: "Pd", name: "Palladium", ipa: "/pəˈleɪ.di.əm/", category: "transition", group: 10, period: 5, config: "[Kr] 4d¹⁰" },
+      { number: 47, symbol: "Ag", name: "Silver", ipa: "/ˈsɪl.vər/", category: "transition", group: 11, period: 5, config: "[Kr] 4d¹⁰ 5s¹" },
+      { number: 48, symbol: "Cd", name: "Cadmium", ipa: "/ˈkæd.mi.əm/", category: "transition", group: 12, period: 5, config: "[Kr] 4d¹⁰ 5s²" },
+      { number: 49, symbol: "In", name: "Indium", ipa: "/ˈɪn.di.əm/", category: "post-transition", group: 13, period: 5, config: "[Kr] 4d¹⁰ 5s² 5p¹" },
+      { number: 50, symbol: "Sn", name: "Tin", ipa: "/tɪn/", category: "post-transition", group: 14, period: 5, config: "[Kr] 4d¹⁰ 5s² 5p²" },
+      { number: 51, symbol: "Sb", name: "Antimony", ipa: "/ˈæn.tɪ.mə.ni/", category: "metalloid", group: 15, period: 5, config: "[Kr] 4d¹⁰ 5s² 5p³" },
+      { number: 52, symbol: "Te", name: "Tellurium", ipa: "/teˈlʊər.i.əm/", category: "metalloid", group: 16, period: 5, config: "[Kr] 4d¹⁰ 5s² 5p⁴" },
+      { number: 53, symbol: "I", name: "Iodine", ipa: "/ˈaɪ.ə.diːn/", category: "halogen", group: 17, period: 5, config: "[Kr] 4d¹⁰ 5s² 5p⁵" },
+      { number: 54, symbol: "Xe", name: "Xenon", ipa: "/ˈzen.ɒn/", category: "noble", group: 18, period: 5, config: "[Kr] 4d¹⁰ 5s² 5p⁶" },
+      { number: 55, symbol: "Cs", name: "Cesium", ipa: "/ˈsiː.zi.əm/", category: "alkali", group: 1, period: 6, config: "[Xe] 6s¹" },
+      { number: 56, symbol: "Ba", name: "Barium", ipa: "/ˈbeər.i.əm/", category: "alkaline", group: 2, period: 6, config: "[Xe] 6s²" },
+      { number: 57, symbol: "La", name: "Lanthanum", ipa: "/ˈlæn.θən.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 5d¹ 6s²" },
+      { number: 58, symbol: "Ce", name: "Cerium", ipa: "/ˈsɪər.i.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f¹ 5d¹ 6s²" },
+      { number: 59, symbol: "Pr", name: "Praseodymium", ipa: "/ˌpreɪ.zi.əʊˈdɪm.i.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f³ 6s²" },
+      { number: 60, symbol: "Nd", name: "Neodymium", ipa: "/ˌniː.əʊˈdɪm.i.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f⁴ 6s²" },
+      { number: 61, symbol: "Pm", name: "Promethium", ipa: "/prəˈmiː.θi.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f⁵ 6s²" },
+      { number: 62, symbol: "Sm", name: "Samarium", ipa: "/səˈmeər.i.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f⁶ 6s²" },
+      { number: 63, symbol: "Eu", name: "Europium", ipa: "/jʊˈrəʊ.pi.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f⁷ 6s²" },
+      { number: 64, symbol: "Gd", name: "Gadolinium", ipa: "/ˌɡæd.əˈlɪn.i.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f⁷ 5d¹ 6s²" },
+      { number: 65, symbol: "Tb", name: "Terbium", ipa: "/ˈtɜːr.bi.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f⁹ 6s²" },
+      { number: 66, symbol: "Dy", name: "Dysprosium", ipa: "/dɪsˈprəʊ.zi.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f¹⁰ 6s²" },
+      { number: 67, symbol: "Ho", name: "Holmium", ipa: "/ˈhəʊl.mi.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f¹¹ 6s²" },
+      { number: 68, symbol: "Er", name: "Erbium", ipa: "/ˈɜːr.bi.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f¹² 6s²" },
+      { number: 69, symbol: "Tm", name: "Thulium", ipa: "/ˈθuː.li.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f¹³ 6s²" },
+      { number: 70, symbol: "Yb", name: "Ytterbium", ipa: "/ɪˈtɜːr.bi.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f¹⁴ 6s²" },
+      { number: 71, symbol: "Lu", name: "Lutetium", ipa: "/luːˈtiː.ʃi.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f¹⁴ 5d¹ 6s²" },
+      { number: 72, symbol: "Hf", name: "Hafnium", ipa: "/ˈhæf.ni.əm/", category: "transition", group: 4, period: 6, config: "[Xe] 4f¹⁴ 5d² 6s²" },
+      { number: 73, symbol: "Ta", name: "Tantalum", ipa: "/ˈtæn.təl.əm/", category: "transition", group: 5, period: 6, config: "[Xe] 4f¹⁴ 5d³ 6s²" },
+      { number: 74, symbol: "W", name: "Tungsten", ipa: "/ˈtʌŋ.stən/", category: "transition", group: 6, period: 6, config: "[Xe] 4f¹⁴ 5d⁴ 6s²" },
+      { number: 75, symbol: "Re", name: "Rhenium", ipa: "/ˈriː.ni.əm/", category: "transition", group: 7, period: 6, config: "[Xe] 4f¹⁴ 5d⁵ 6s²" },
+      { number: 76, symbol: "Os", name: "Osmium", ipa: "/ˈɒz.mi.əm/", category: "transition", group: 8, period: 6, config: "[Xe] 4f¹⁴ 5d⁶ 6s²" },
+      { number: 77, symbol: "Ir", name: "Iridium", ipa: "/ɪˈrɪd.i.əm/", category: "transition", group: 9, period: 6, config: "[Xe] 4f¹⁴ 5d⁷ 6s²" },
+      { number: 78, symbol: "Pt", name: "Platinum", ipa: "/ˈplæt.ɪ.nəm/", category: "transition", group: 10, period: 6, config: "[Xe] 4f¹⁴ 5d⁹ 6s¹" },
+      { number: 79, symbol: "Au", name: "Gold", ipa: "/ɡəʊld/", category: "transition", group: 11, period: 6, config: "[Xe] 4f¹⁴ 5d¹⁰ 6s¹" },
+      { number: 80, symbol: "Hg", name: "Mercury", ipa: "/ˈmɜːr.kjər.i/", category: "transition", group: 12, period: 6, config: "[Xe] 4f¹⁴ 5d¹⁰ 6s²" },
+      { number: 81, symbol: "Tl", name: "Thallium", ipa: "/ˈθæl.i.əm/", category: "post-transition", group: 13, period: 6, config: "[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p¹" },
+      { number: 82, symbol: "Pb", name: "Lead", ipa: "/led/", category: "post-transition", group: 14, period: 6, config: "[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p²" },
+      { number: 83, symbol: "Bi", name: "Bismuth", ipa: "/ˈbɪz.məθ/", category: "post-transition", group: 15, period: 6, config: "[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p³" },
+      { number: 84, symbol: "Po", name: "Polonium", ipa: "/pəˈləʊ.ni.əm/", category: "metalloid", group: 16, period: 6, config: "[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁴" },
+      { number: 85, symbol: "At", name: "Astatine", ipa: "/ˈæs.tə.tiːn/", category: "halogen", group: 17, period: 6, config: "[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁵" },
+      { number: 86, symbol: "Rn", name: "Radon", ipa: "/ˈreɪ.dɒn/", category: "noble", group: 18, period: 6, config: "[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁶" },
+      { number: 87, symbol: "Fr", name: "Francium", ipa: "/ˈfræn.si.əm/", category: "alkali", group: 1, period: 7, config: "[Rn] 7s¹" },
+      { number: 88, symbol: "Ra", name: "Radium", ipa: "/ˈreɪ.di.əm/", category: "alkaline", group: 2, period: 7, config: "[Rn] 7s²" },
+      { number: 89, symbol: "Ac", name: "Actinium", ipa: "/ækˈtɪn.i.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 6d¹ 7s²" },
+      { number: 90, symbol: "Th", name: "Thorium", ipa: "/ˈθɔːr.i.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f⁰ 6d² 7s²" },
+      { number: 91, symbol: "Pa", name: "Protactinium", ipa: "/ˌprəʊ.tækˈtɪn.i.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f² 6d¹ 7s²" },
+      { number: 92, symbol: "U", name: "Uranium", ipa: "/jʊˈreɪ.ni.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f³ 6d¹ 7s²" },
+      { number: 93, symbol: "Np", name: "Neptunium", ipa: "/nepˈtjuː.ni.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f⁴ 6d¹ 7s²" },
+      { number: 94, symbol: "Pu", name: "Plutonium", ipa: "/pluːˈtəʊ.ni.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f⁶ 7s²" },
+      { number: 95, symbol: "Am", name: "Americium", ipa: "/ˌæm.əˈrɪs.i.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f⁷ 7s²" },
+      { number: 96, symbol: "Cm", name: "Curium", ipa: "/ˈkjʊər.i.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f⁷ 6d¹ 7s²" },
+      { number: 97, symbol: "Bk", name: "Berkelium", ipa: "/ˈbɜːr.kli.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f⁹ 7s²" },
+      { number: 98, symbol: "Cf", name: "Californium", ipa: "/ˌkæl.ɪˈfɔːr.ni.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f¹⁰ 7s²" },
+      { number: 99, symbol: "Es", name: "Einsteinium", ipa: "/aɪnˈstaɪ.ni.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f¹¹ 7s²" },
+      { number: 100, symbol: "Fm", name: "Fermium", ipa: "/ˈfɜːr.mi.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f¹² 7s²" },
+      { number: 101, symbol: "Md", name: "Mendelevium", ipa: "/ˌmen.dəˈliː.vi.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f¹³ 7s²" },
+      { number: 102, symbol: "No", name: "Nobelium", ipa: "/nəʊˈbel.i.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f¹⁴ 7s²" },
+      { number: 103, symbol: "Lr", name: "Lawrencium", ipa: "/lɔːˈren.si.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f¹⁴ 6d¹ 7s²" },
+      { number: 104, symbol: "Rf", name: "Rutherfordium", ipa: "/ˌrʌð.əˈfɔːr.di.əm/", category: "transition", group: 4, period: 7, config: "[Rn] 5f¹⁴ 6d² 7s²" },
+      { number: 105, symbol: "Db", name: "Dubnium", ipa: "/ˈduːb.ni.əm/", category: "transition", group: 5, period: 7, config: "[Rn] 5f¹⁴ 6d³ 7s²" },
+      { number: 106, symbol: "Sg", name: "Seaborgium", ipa: "/siːˈbɔːr.ɡi.əm/", category: "transition", group: 6, period: 7, config: "[Rn] 5f¹⁴ 6d⁴ 7s²" },
+      { number: 107, symbol: "Bh", name: "Bohrium", ipa: "/ˈbɔːr.i.əm/", category: "transition", group: 7, period: 7, config: "[Rn] 5f¹⁴ 6d⁵ 7s²" },
+      { number: 108, symbol: "Hs", name: "Hassium", ipa: "/ˈhæs.i.əm/", category: "transition", group: 8, period: 7, config: "[Rn] 5f¹⁴ 6d⁶ 7s²" },
+      { number: 109, symbol: "Mt", name: "Meitnerium", ipa: "/maɪtˈnɪər.i.əm/", category: "transition", group: 9, period: 7, config: "[Rn] 5f¹⁴ 6d⁷ 7s²" },
+      { number: 110, symbol: "Ds", name: "Darmstadtium", ipa: "/dɑːrmˈʃtæt.i.əm/", category: "transition", group: 10, period: 7, config: "[Rn] 5f¹⁴ 6d⁹ 7s¹" },
+      { number: 111, symbol: "Rg", name: "Roentgenium", ipa: "/rɒntɡen.i.əm/", category: "transition", group: 11, period: 7, config: "[Rn] 5f¹⁴ 6d¹⁰ 7s¹" },
+      { number: 112, symbol: "Cn", name: "Copernicium", ipa: "/ˌkoʊ.pərˈnɪs.i.əm/", category: "transition", group: 12, period: 7, config: "[Rn] 5f¹⁴ 6d¹⁰ 7s²" },
+      { number: 113, symbol: "Nh", name: "Nihonium", ipa: "/nɪˈhoʊ.ni.əm/", category: "post-transition", group: 13, period: 7, config: "[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p¹" },
+      { number: 114, symbol: "Fl", name: "Flerovium", ipa: "/flɛˈroʊ.vi.əm/", category: "post-transition", group: 14, period: 7, config: "[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p²" },
+      { number: 115, symbol: "Mc", name: "Moscovium", ipa: "/mɒsˈkoʊ.vi.əm/", category: "post-transition", group: 15, period: 7, config: "[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p³" },
+      { number: 116, symbol: "Lv", name: "Livermorium", ipa: "/ˌlɪv.ərˈmɔːr.i.əm/", category: "post-transition", group: 16, period: 7, config: "[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁴" },
+      { number: 117, symbol: "Ts", name: "Tennessine", ipa: "/ˈten.ə.siːn/", category: "halogen", group: 17, period: 7, config: "[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁵" },
+      { number: 118, symbol: "Og", name: "Oganesson", ipa: "/ˌoʊ.ɡəˈnes.ɒn/", category: "noble", group: 18, period: 7, config: "[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁶" }
+    ];
+
+    // ========================================
+    // GAME STATE
+    // ========================================
+    let gameState = {
+      mode: null,
+      score: 0,
+      currentQuestion: 0,
+      totalQuestions: 20,
+      questions: [],
+      startTime: null,
+      answered: false
+    };
+
+    // ========================================
+    // DEFAULT CONFIG
+    // ========================================
+    const defaultConfig = {
+      game_title: "118 Elements Challenge",
+      questions_label: "20",
+      background_color: "#1a1a2e",
+      accent_color: "#06b6d4",
+      text_color: "#ffffff",
+      card_color: "rgba(255,255,255,0.1)",
+      button_color: "#8b5cf6"
+    };
+
+    let config = { ...defaultConfig };
+
+    // ========================================
+    // ELEMENT SDK INITIALIZATION
+    // ========================================
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (newConfig) => {
+          config = { ...defaultConfig, ...newConfig };
+          applyConfig();
+        },
+        mapToCapabilities: (cfg) => ({
+          recolorables: [
+            {
+              get: () => cfg.background_color || defaultConfig.background_color,
+              set: (v) => window.elementSdk.setConfig({ background_color: v })
+            },
+            {
+              get: () => cfg.accent_color || defaultConfig.accent_color,
+              set: (v) => window.elementSdk.setConfig({ accent_color: v })
+            },
+            {
+              get: () => cfg.text_color || defaultConfig.text_color,
+              set: (v) => window.elementSdk.setConfig({ text_color: v })
+            },
+            {
+              get: () => cfg.card_color || defaultConfig.card_color,
+              set: (v) => window.elementSdk.setConfig({ card_color: v })
+            },
+            {
+              get: () => cfg.button_color || defaultConfig.button_color,
+              set: (v) => window.elementSdk.setConfig({ button_color: v })
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (cfg) => new Map([
+          ["game_title", cfg.game_title || defaultConfig.game_title],
+          ["questions_label", cfg.questions_label || defaultConfig.questions_label]
+        ])
+      });
+    }
+
+    // ========================================
+    // APPLY CONFIG
+    // ========================================
+    function applyConfig() {
+      const titleEl = document.getElementById('gameTitle');
+      if (titleEl) {
+        titleEl.textContent = config.game_title || defaultConfig.game_title;
+      }
+      
+      const qNum = parseInt(config.questions_label) || 20;
+      if (qNum >= 5 && qNum <= 118) {
+        gameState.totalQuestions = qNum;
+      }
+    }
+
+    // ========================================
+    // WEB SPEECH API - PRONUNCIATION
+    // ========================================
+    function speak(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.9;
+        utterance.pitch = 1;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    // ========================================
+    // UTILITY FUNCTIONS
+    // ========================================
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function getRandomElements(exclude, count) {
+      const filtered = elements.filter(el => el.number !== exclude.number);
+      return shuffleArray(filtered).slice(0, count);
+    }
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function getCategoryClass(category) {
+      const classes = {
+        'alkali': 'cat-alkali',
+        'alkaline': 'cat-alkaline',
+        'transition': 'cat-transition',
+        'post-transition': 'cat-post-transition',
+        'metalloid': 'cat-metalloid',
+        'nonmetal': 'cat-nonmetal',
+        'halogen': 'cat-halogen',
+        'noble': 'cat-noble',
+        'lanthanide': 'cat-lanthanide',
+        'actinide': 'cat-actinide'
+      };
+      return classes[category] || 'bg-gray-600';
+    }
+
+    // ========================================
+    // NAVIGATION
+    // ========================================
+    function showMainMenu() {
+      document.getElementById('mainMenu').classList.remove('hidden');
+      document.getElementById('gameScreen').classList.add('hidden');
+      document.getElementById('resultsScreen').classList.add('hidden');
+      document.getElementById('periodicScreen').classList.add('hidden');
+    }
+
+    function showGameScreen() {
+      document.getElementById('mainMenu').classList.add('hidden');
+      document.getElementById('gameScreen').classList.remove('hidden');
+      document.getElementById('resultsScreen').classList.add('hidden');
+      document.getElementById('periodicScreen').classList.add('hidden');
+    }
+
+    function showResultsScreen() {
+      document.getElementById('mainMenu').classList.add('hidden');
+      document.getElementById('gameScreen').classList.add('hidden');
+      document.getElementById('resultsScreen').classList.remove('hidden');
+      document.getElementById('periodicScreen').classList.add('hidden');
+    }
+
+    function showPeriodicTable() {
+      document.getElementById('mainMenu').classList.add('hidden');
+      document.getElementById('gameScreen').classList.add('hidden');
+      document.getElementById('resultsScreen').classList.add('hidden');
+      document.getElementById('periodicScreen').classList.remove('hidden');
+      renderPeriodicTable();
+    }
+
+    // ========================================
+    // GAME LOGIC
+    // ========================================
+    function startGame(mode) {
+      gameState = {
+        mode: mode,
+        score: 0,
+        currentQuestion: 0,
+        totalQuestions: parseInt(config.questions_label) || 20,
+        questions: shuffleArray([...elements]).slice(0, parseInt(config.questions_label) || 20),
+        startTime: Date.now(),
+        answered: false
+      };
+
+      const modeLabels = {
+        'symbolToName': '🔤 Symbol to Name',
+        'nameToSymbol': '🧪 Name to Symbol',
+        'typing': '⌨️ Typing Challenge'
+      };
+
+      document.getElementById('modeLabel').textContent = modeLabels[mode];
+      document.getElementById('score').textContent = '0';
+      
+      showGameScreen();
+      updateTimer();
+      showQuestion();
+    }
+
+    function restartGame() {
+      startGame(gameState.mode);
+    }
+
+    let timerInterval;
+
+    function updateTimer() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - gameState.startTime) / 1000);
+        document.getElementById('timer').textContent = formatTime(elapsed);
+      }, 1000);
+    }
+
+    function showQuestion() {
+      if (gameState.currentQuestion >= gameState.totalQuestions) {
+        endGame();
+        return;
+      }
+
+      gameState.answered = false;
+      const element = gameState.questions[gameState.currentQuestion];
+      const progress = ((gameState.currentQuestion) / gameState.totalQuestions) * 100;
+      
+      document.getElementById('questionNum').textContent = `Question ${gameState.currentQuestion + 1}/${gameState.totalQuestions}`;
+      document.getElementById('progressBar').style.width = `${progress}%`;
+
+      const card = document.getElementById('questionCard');
+      card.classList.remove('glow-correct', 'glow-wrong');
+      
+      switch (gameState.mode) {
+        case 'symbolToName':
+          renderSymbolToName(element);
+          break;
+        case 'nameToSymbol':
+          renderNameToSymbol(element);
+          break;
+        case 'typing':
+          renderTypingChallenge(element);
+          break;
+      }
+    }
+
+    function renderSymbolToName(element) {
+      const wrongOptions = getRandomElements(element, 3);
+      const options = shuffleArray([element, ...wrongOptions]);
+      
+      const card = document.getElementById('questionCard');
+      card.innerHTML = `
+        <div class="text-center fade-in">
+          <div class="text-gray-400 mb-2">What is the name of this element?</div>
+          <div class="font-display text-7xl md:text-9xl font-bold mb-2 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+            ${element.symbol}
+          </div>
+          <div class="text-gray-500 mb-6">#${element.number}</div>
+          <div class="grid grid-cols-2 gap-3" id="options">
+            ${options.map((opt, i) => `
+              <button onclick="checkAnswer(${opt.number === element.number}, ${element.number})" 
+                      class="option-btn bg-white/10 hover:bg-white/20 px-4 py-3 rounded-xl font-semibold text-lg transition"
+                      data-element="${opt.number}">
+                ${opt.name}
+              </button>
+            `).join('')}
+          </div>
+          <div id="feedback" class="mt-6 hidden"></div>
+        </div>
+      `;
+    }
+
+    function renderNameToSymbol(element) {
+      const wrongOptions = getRandomElements(element, 3);
+      const options = shuffleArray([element, ...wrongOptions]);
+      
+      const card = document.getElementById('questionCard');
+      card.innerHTML = `
+        <div class="text-center fade-in">
+          <div class="text-gray-400 mb-2">What is the symbol for this element?</div>
+          <div class="text-3xl md:text-5xl font-bold mb-2 text-white">
+            ${element.name}
+          </div>
+          <div class="text-gray-500 mb-6">#${element.number}</div>
+          <div class="grid grid-cols-2 gap-3" id="options">
+            ${options.map((opt, i) => `
+              <button onclick="checkAnswer(${opt.number === element.number}, ${element.number})" 
+                      class="option-btn bg-white/10 hover:bg-white/20 px-6 py-4 rounded-xl font-display font-bold text-3xl transition"
+                      data-element="${opt.number}">
+                ${opt.symbol}
+              </button>
+            `).join('')}
+          </div>
+          <div id="feedback" class="mt-6 hidden"></div>
+        </div>
+      `;
+    }
+
+    function renderTypingChallenge(element) {
+      const card = document.getElementById('questionCard');
+      card.innerHTML = `
+        <div class="text-center fade-in">
+          <div class="text-gray-400 mb-2">Type the name of this element</div>
+          <div class="font-display text-7xl md:text-9xl font-bold mb-2 bg-gradient-to-r from-green-400 to-teal-400 bg-clip-text text-transparent">
+            ${element.symbol}
+          </div>
+          <div class="text-gray-500 mb-6">#${element.number}</div>
+          <form onsubmit="checkTypingAnswer(event, ${element.number})" class="space-y-4">
+            <label for="answerInput" class="sr-only">Element Name</label>
+            <input type="text" id="answerInput" 
+                   class="w-full bg-white/10 border-2 border-white/20 rounded-xl px-4 py-3 text-center text-xl focus:outline-none focus:border-cyan-400 transition"
+                   placeholder="Enter element name..."
+                   autocomplete="off"
+                   autofocus>
+            <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-teal-600 px-6 py-3 rounded-xl font-bold text-lg shadow-lg hover:opacity-90 transition">
+              Submit Answer
+            </button>
+          </form>
+          <div id="feedback" class="mt-6 hidden"></div>
+        </div>
+      `;
+      
+      setTimeout(() => {
+        const input = document.getElementById('answerInput');
+        if (input) input.focus();
+      }, 100);
+    }
+
+    function checkAnswer(isCorrect, elementNumber) {
+      if (gameState.answered) return;
+      gameState.answered = true;
+
+      const element = elements.find(el => el.number === elementNumber);
+      const card = document.getElementById('questionCard');
+      const buttons = document.querySelectorAll('#options button');
+      
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        const btnElement = parseInt(btn.dataset.element);
+        if (btnElement === elementNumber) {
+          btn.classList.remove('bg-white/10');
+          btn.classList.add('bg-green-500');
+        } else if (!isCorrect && btn === event.target) {
+          btn.classList.remove('bg-white/10');
+          btn.classList.add('bg-red-500');
+        }
+      });
+
+      if (isCorrect) {
+        gameState.score++;
+        document.getElementById('score').textContent = gameState.score;
+        card.classList.add('glow-correct');
+        setTimeout(() => {
+          speak(element.name);
+        }, 300);
+      } else {
+        card.classList.add('glow-wrong');
+      }
+
+      showFeedback(element, isCorrect);
+      
+      setTimeout(() => {
+        gameState.currentQuestion++;
+        showQuestion();
+      }, 2500);
+    }
+
+    function checkTypingAnswer(event, elementNumber) {
+      event.preventDefault();
+      if (gameState.answered) return;
+      gameState.answered = true;
+
+      const element = elements.find(el => el.number === elementNumber);
+      const input = document.getElementById('answerInput');
+      const userAnswer = input.value.trim().toLowerCase();
+      const correctAnswer = element.name.toLowerCase();
+      const isCorrect = userAnswer === correctAnswer;
+
+      const card = document.getElementById('questionCard');
+      input.disabled = true;
+
+      if (isCorrect) {
+        gameState.score++;
+        document.getElementById('score').textContent = gameState.score;
+        card.classList.add('glow-correct');
+        input.classList.remove('border-white/20');
+        input.classList.add('border-green-500', 'bg-green-500/20');
+        setTimeout(() => {
+          speak(element.name);
+        }, 300);
+      } else {
+        card.classList.add('glow-wrong');
+        input.classList.remove('border-white/20');
+        input.classList.add('border-red-500', 'bg-red-500/20');
+      }
+
+      showFeedback(element, isCorrect);
+      
+      setTimeout(() => {
+        gameState.currentQuestion++;
+        showQuestion();
+      }, 2500);
+    }
+
+    function showFeedback(element, isCorrect) {
+      const feedback = document.getElementById('feedback');
+      feedback.classList.remove('hidden');
+      feedback.innerHTML = `
+        <div class="fade-in ${isCorrect ? 'text-green-400' : 'text-red-400'}">
+          <div class="text-2xl font-bold mb-2">${isCorrect ? '✓ Correct!' : '✗ Incorrect'}</div>
+          <div class="bg-white/5 rounded-xl p-4 inline-block">
+            <div class="text-white text-xl font-bold">${element.symbol} - ${element.name}</div>
+            <div class="text-gray-300 mt-1">${element.ipa}</div>
+            <button onclick="speak('${element.name}')" class="speaker-btn mt-2 bg-cyan-500 hover:bg-cyan-600 px-4 py-2 rounded-full text-white font-bold transition">
+              🔊 Listen
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function endGame() {
+      clearInterval(timerInterval);
+      const elapsed = Math.floor((Date.now() - gameState.startTime) / 1000);
+      const accuracy = Math.round((gameState.score / gameState.totalQuestions) * 100);
+
+      document.getElementById('finalScore').textContent = `${gameState.score}/${gameState.totalQuestions}`;
+      document.getElementById('finalTime').textContent = formatTime(elapsed);
+      document.getElementById('accuracy').textContent = `${accuracy}%`;
+
+      showResultsScreen();
+    }
+
+    // ========================================
+    // PERIODIC TABLE
+    // ========================================
+    function renderPeriodicTable() {
+      const grid = document.getElementById('periodicGrid');
+      const filter = document.getElementById('filterGroup').value;
+      
+      const positions = {
+        1: {row: 1, col: 1}, 2: {row: 1, col: 18},
+        3: {row: 2, col: 1}, 4: {row: 2, col: 2}, 5: {row: 2, col: 13}, 6: {row: 2, col: 14}, 7: {row: 2, col: 15}, 8: {row: 2, col: 16}, 9: {row: 2, col: 17}, 10: {row: 2, col: 18},
+        11: {row: 3, col: 1}, 12: {row: 3, col: 2}, 13: {row: 3, col: 13}, 14: {row: 3, col: 14}, 15: {row: 3, col: 15}, 16: {row: 3, col: 16}, 17: {row: 3, col: 17}, 18: {row: 3, col: 18},
+        19: {row: 4, col: 1}, 20: {row: 4, col: 2}, 21: {row: 4, col: 3}, 22: {row: 4, col: 4}, 23: {row: 4, col: 5}, 24: {row: 4, col: 6}, 25: {row: 4, col: 7}, 26: {row: 4, col: 8}, 27: {row: 4, col: 9}, 28: {row: 4, col: 10}, 29: {row: 4, col: 11}, 30: {row: 4, col: 12}, 31: {row: 4, col: 13}, 32: {row: 4, col: 14}, 33: {row: 4, col: 15}, 34: {row: 4, col: 16}, 35: {row: 4, col: 17}, 36: {row: 4, col: 18},
+        37: {row: 5, col: 1}, 38: {row: 5, col: 2}, 39: {row: 5, col: 3}, 40: {row: 5, col: 4}, 41: {row: 5, col: 5}, 42: {row: 5, col: 6}, 43: {row: 5, col: 7}, 44: {row: 5, col: 8}, 45: {row: 5, col: 9}, 46: {row: 5, col: 10}, 47: {row: 5, col: 11}, 48: {row: 5, col: 12}, 49: {row: 5, col: 13}, 50: {row: 5, col: 14}, 51: {row: 5, col: 15}, 52: {row: 5, col: 16}, 53: {row: 5, col: 17}, 54: {row: 5, col: 18},
+        55: {row: 6, col: 1}, 56: {row: 6, col: 2}, 72: {row: 6, col: 4}, 73: {row: 6, col: 5}, 74: {row: 6, col: 6}, 75: {row: 6, col: 7}, 76: {row: 6, col: 8}, 77: {row: 6, col: 9}, 78: {row: 6, col: 10}, 79: {row: 6, col: 11}, 80: {row: 6, col: 12}, 81: {row: 6, col: 13}, 82: {row: 6, col: 14}, 83: {row: 6, col: 15}, 84: {row: 6, col: 16}, 85: {row: 6, col: 17}, 86: {row: 6, col: 18},
+        87: {row: 7, col: 1}, 88: {row: 7, col: 2}, 104: {row: 7, col: 4}, 105: {row: 7, col: 5}, 106: {row: 7, col: 6}, 107: {row: 7, col: 7}, 108: {row: 7, col: 8}, 109: {row: 7, col: 9}, 110: {row: 7, col: 10}, 111: {row: 7, col: 11}, 112: {row: 7, col: 12}, 113: {row: 7, col: 13}, 114: {row: 7, col: 14}, 115: {row: 7, col: 15}, 116: {row: 7, col: 16}, 117: {row: 7, col: 17}, 118: {row: 7, col: 18},
+        57: {row: 9, col: 4}, 58: {row: 9, col: 5}, 59: {row: 9, col: 6}, 60: {row: 9, col: 7}, 61: {row: 9, col: 8}, 62: {row: 9, col: 9}, 63: {row: 9, col: 10}, 64: {row: 9, col: 11}, 65: {row: 9, col: 12}, 66: {row: 9, col: 13}, 67: {row: 9, col: 14}, 68: {row: 9, col: 15}, 69: {row: 9, col: 16}, 70: {row: 9, col: 17}, 71: {row: 9, col: 18},
+        89: {row: 10, col: 4}, 90: {row: 10, col: 5}, 91: {row: 10, col: 6}, 92: {row: 10, col: 7}, 93: {row: 10, col: 8}, 94: {row: 10, col: 9}, 95: {row: 10, col: 10}, 96: {row: 10, col: 11}, 97: {row: 10, col: 12}, 98: {row: 10, col: 13}, 99: {row: 10, col: 14}, 100: {row: 10, col: 15}, 101: {row: 10, col: 16}, 102: {row: 10, col: 17}, 103: {row: 10, col: 18}
+      };
+
+      let html = '<div class="grid gap-1" style="grid-template-columns: repeat(18, minmax(40px, 1fr)); grid-template-rows: repeat(10, auto);">';
+      
+      html += `<div style="grid-row: 6; grid-column: 3;" class="flex items-center justify-center text-xs text-gray-400">57-71</div>`;
+      html += `<div style="grid-row: 7; grid-column: 3;" class="flex items-center justify-center text-xs text-gray-400">89-103</div>`;
+      html += `<div style="grid-row: 8; grid-column: 1 / span 18;" class="h-4"></div>`;
+
+      elements.forEach(el => {
+        const pos = positions[el.number];
+        if (!pos) return;
+        
+        const isFiltered = filter === 'all' || el.category === filter;
+        const opacity = isFiltered ? '' : 'opacity-20';
+        
+        html += `
+          <div onclick="showElementDetail(${el.number})" 
+               class="periodic-cell ${getCategoryClass(el.category)} ${opacity} rounded-lg p-1 text-center cursor-pointer relative"
+               style="grid-row: ${pos.row}; grid-column: ${pos.col};">
+            <div class="text-xs text-white/70">${el.number}</div>
+            <div class="font-display font-bold text-sm md:text-base text-white">${el.symbol}</div>
+            <div class="text-xs text-white/80 hidden md:block truncate">${el.name}</div>
+          </div>
+        `;
+      });
+
+      html += '</div>';
+      
+      html += `
+        <div class="mt-6 flex flex-wrap gap-2 justify-center text-xs">
+          <div class="flex items-center gap-1"><div class="w-4 h-4 rounded cat-alkali"></div><span>Alkali</span></div>
+          <div class="flex items-center gap-1"><div class="w-4 h-4 rounded cat-alkaline"></div><span>Alkaline</span></div>
+          <div class="flex items-center gap-1"><div class="w-4 h-4 rounded cat-transition"></div><span>Transition</span></div>
+          <div class="flex items-center gap-1"><div class="w-4 h-4 rounded cat-post-transition"></div><span>Post-Trans.</span></div>
+          <div class="flex items-center gap-1"><div class="w-4 h-4 rounded cat-metalloid"></div><span>Metalloid</span></div>
+          <div class="flex items-center gap-1"><div class="w-4 h-4 rounded cat-nonmetal"></div><span>Nonmetal</span></div>
+          <div class="flex items-center gap-1"><div class="w-4 h-4 rounded cat-halogen"></div><span>Halogen</span></div>
+          <div class="flex items-center gap-1"><div class="w-4 h-4 rounded cat-noble"></div><span>Noble Gas</span></div>
+          <div class="flex items-center gap-1"><div class="w-4 h-4 rounded cat-lanthanide"></div><span>Lanthanide</span></div>
+          <div class="flex items-center gap-1"><div class="w-4 h-4 rounded cat-actinide"></div><span>Actinide</span></div>
+        </div>
+      `;
+      
+      grid.innerHTML = html;
+    }
+
+    function filterElements() {
+      renderPeriodicTable();
+    }
+
+    function showElementDetail(number) {
+      const el = elements.find(e => e.number === number);
+      const modal = document.getElementById('elementModal');
+      const content = document.getElementById('modalContent');
+      
+      const categoryName = el.category.replace('-', ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      
+      content.innerHTML = `
+        <div class="text-center">
+          <div class="${getCategoryClass(el.category)} inline-block px-6 py-4 rounded-2xl mb-4">
+            <div class="text-white/70 text-sm">Atomic #${el.number}</div>
+            <div class="font-display text-6xl font-bold text-white">${el.symbol}</div>
+          </div>
+          
+          <h3 class="text-3xl font-bold text-cyan-400 mb-1">${el.name}</h3>
+          <div class="text-gray-300 text-sm mb-4">${el.ipa}</div>
+          
+          <button onclick="speak('${el.name}')" class="speaker-btn bg-cyan-500 hover:bg-cyan-600 px-6 py-2 rounded-full text-white font-bold text-sm transition mb-4">
+            🔊 Listen to Pronunciation
+          </button>
+          
+          <div class="bg-white/5 rounded-xl p-4 mb-4 text-left space-y-2">
+            <div class="grid grid-cols-2 gap-2 text-sm">
+              <div class="bg-white/10 rounded p-2">
+                <div class="text-gray-400 text-xs">Atomic Number</div>
+                <div class="font-bold text-white text-lg">${el.number}</div>
+              </div>
+              <div class="bg-white/10 rounded p-2">
+                <div class="text-gray-400 text-xs">Symbol</div>
+                <div class="font-display font-bold text-white text-lg">${el.symbol}</div>
+              </div>
+              <div class="bg-white/10 rounded p-2">
+                <div class="text-gray-400 text-xs">Period</div>
+                <div class="font-bold text-white text-lg">${el.period}</div>
+              </div>
+              <div class="bg-white/10 rounded p-2">
+                <div class="text-gray-400 text-xs">Group</div>
+                <div class="font-bold text-white text-lg">${el.group}</div>
+              </div>
+            </div>
+            
+            <div class="bg-white/10 rounded p-2">
+              <div class="text-gray-400 text-xs">Category</div>
+              <div class="font-bold text-white capitalize">${categoryName}</div>
+            </div>
+            
+            <div class="bg-white/10 rounded p-2">
+              <div class="text-gray-400 text-xs">Electron Configuration</div>
+              <div class="font-mono text-white text-sm break-words mt-1">${el.config}</div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('elementModal').classList.add('hidden');
+    }
+
+    document.getElementById('elementModal').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) {
+        closeModal();
+      }
+    });
+
+    applyConfig();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ca39bc6a7888696',t:'MTc3MDQ3NDg3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
