@@ -6,14 +6,14 @@
   <title>118 Elements Challenge</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/_sdk/element_sdk.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Nunito:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;display=swap" rel="stylesheet">
   <style>
     body {
       box-sizing: border-box;
     }
     
     * {
-      font-family: 'Nunito', sans-serif;
+      font-family: 'Times New Roman', serif;
     }
     
     .font-display {
@@ -213,7 +213,7 @@
    <div id="periodicScreen" class="min-h-full flex flex-col p-4 hidden">
     <div class="flex flex-wrap justify-between items-center mb-4 gap-2"><button onclick="showMainMenu()" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition"> ← Back </button>
      <h2 class="font-display text-xl md:text-2xl font-bold text-cyan-400">Periodic Table</h2>
-     <div class="flex gap-2"><select id="filterGroup" onchange="filterElements()" class="bg-white/10 px-3 py-2 rounded-xl text-sm"> <option value="all">All Groups</option> <option value="alkali">Alkali Metals</option> <option value="alkaline">Alkaline Earth</option> <option value="transition">Transition Metals</option> <option value="post-transition">Post-Transition</option> <option value="metalloid">Metalloids</option> <option value="nonmetal">Nonmetals</option> <option value="halogen">Halogens</option> <option value="noble">Noble Gases</option> <option value="lanthanide">Lanthanides</option> <option value="actinide">Actinides</option> </select>
+     <div class="flex gap-2"><select id="filterGroup" onchange="filterElements()" class="bg-white/10 px-3 py-2 rounded-xl text-sm max-w-xs"> <optgroup label="Tất cả"> <option value="all">All Groups</option> </optgroup> <optgroup label="Kim loại (Metals)"> <option value="alkali">Alkali Metals (Kim loại kiềm)</option> <option value="alkaline">Alkaline Earth (Kim loại kiềm thổ)</option> <option value="transition">Transition Metals (Kim loại chuyển tiếp)</option> <option value="post-transition">Post-Transition (Kim loại sau chuyển tiếp)</option> <option value="lanthanide">Lanthanides (Hành tinh hiếm)</option> <option value="actinide">Actinides (Hành tinh phóng xạ)</option> </optgroup> <optgroup label="Phi kim (Nonmetals)"> <option value="nonmetal">Nonmetals (Phi kim)</option> <option value="halogen">Halogens (Halô gen)</option> <option value="noble">Noble Gases (Khí hiếm)</option> </optgroup> <optgroup label="Á kim (Metalloids)"> <option value="metalloid">Metalloids (Á kim)</option> </optgroup> </select>
      </div>
     </div><!-- Periodic Table Grid -->
     <div class="flex-1 overflow-auto">
@@ -233,7 +233,7 @@
     // ========================================
     const elements = [
       { number: 1, symbol: "H", name: "Hydrogen", ipa: "/ˈhaɪ.drə.dʒən/", category: "nonmetal", group: 1, period: 1, config: "1s¹" },
-      { number: 2, symbol: "He", name: "Helium", ipa: "/ˈhiː.li.əm/", category: "noble", group: 18, period: 1, config: "1s²" },
+      { number: 2, symbol: "He", name: "Helium", ipa: "/ˈhiː.li.    m/", category: "noble", group: 18, period: 1, config: "1s²" },
       { number: 3, symbol: "Li", name: "Lithium", ipa: "/ˈlɪθ.i.əm/", category: "alkali", group: 1, period: 2, config: "1s² 2s¹" },
       { number: 4, symbol: "Be", name: "Beryllium", ipa: "/bəˈrɪl.i.əm/", category: "alkaline", group: 2, period: 2, config: "1s² 2s²" },
       { number: 5, symbol: "B", name: "Boron", ipa: "/bɔːr.ɒn/", category: "metalloid", group: 13, period: 2, config: "1s² 2s² 2p¹" },
@@ -275,7 +275,7 @@
       { number: 41, symbol: "Nb", name: "Niobium", ipa: "/naɪˈəʊ.bi.əm/", category: "transition", group: 5, period: 5, config: "[Kr] 4d⁴ 5s¹" },
       { number: 42, symbol: "Mo", name: "Molybdenum", ipa: "/məˈlɪb.dən.əm/", category: "transition", group: 6, period: 5, config: "[Kr] 4d⁵ 5s¹" },
       { number: 43, symbol: "Tc", name: "Technetium", ipa: "/tekˈniː.ʃi.əm/", category: "transition", group: 7, period: 5, config: "[Kr] 4d⁵ 5s²" },
-      { number: 44, symbol: "Ru", name: "Ruthenium", ipa: "/ruːˈθiː.ni.əm/", category: "transition", group: 8, period: 5, config: "[Kr] 4d⁷ 5s¹" },
+      { number: 44, symbol: "Ru", name: "Ruthenium", ipa: "/ruːˈθiː.ni.əm/", category: "transition", group: 8, period: 5, config: "[Kr] 4d   5s¹" },
       { number: 45, symbol: "Rh", name: "Rhodium", ipa: "/ˈrəʊ.di.əm/", category: "transition", group: 9, period: 5, config: "[Kr] 4d⁸ 5s¹" },
       { number: 46, symbol: "Pd", name: "Palladium", ipa: "/pəˈleɪ.di.əm/", category: "transition", group: 10, period: 5, config: "[Kr] 4d¹⁰" },
       { number: 47, symbol: "Ag", name: "Silver", ipa: "/ˈsɪl.vər/", category: "transition", group: 11, period: 5, config: "[Kr] 4d¹⁰ 5s¹" },
@@ -294,7 +294,7 @@
       { number: 60, symbol: "Nd", name: "Neodymium", ipa: "/ˌniː.əʊˈdɪm.i.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f⁴ 6s²" },
       { number: 61, symbol: "Pm", name: "Promethium", ipa: "/prəˈmiː.θi.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f⁵ 6s²" },
       { number: 62, symbol: "Sm", name: "Samarium", ipa: "/səˈmeər.i.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f⁶ 6s²" },
-      { number: 63, symbol: "Eu", name: "Europium", ipa: "/jʊˈrəʊ.pi.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f⁷ 6s²" },
+      { number: 63, symbol: "Eu", name: "Europium", ipa: "/jʊˈrəʊ.pi.  m/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f⁷ 6s²" },
       { number: 64, symbol: "Gd", name: "Gadolinium", ipa: "/ˌɡæd.əˈlɪn.i.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f⁷ 5d¹ 6s²" },
       { number: 65, symbol: "Tb", name: "Terbium", ipa: "/ˈtɜːr.bi.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f⁹ 6s²" },
       { number: 66, symbol: "Dy", name: "Dysprosium", ipa: "/dɪsˈprəʊ.zi.əm/", category: "lanthanide", group: 3, period: 6, config: "[Xe] 4f¹⁰ 6s²" },
@@ -307,7 +307,7 @@
       { number: 73, symbol: "Ta", name: "Tantalum", ipa: "/ˈtæn.təl.əm/", category: "transition", group: 5, period: 6, config: "[Xe] 4f¹⁴ 5d³ 6s²" },
       { number: 74, symbol: "W", name: "Tungsten", ipa: "/ˈtʌŋ.stən/", category: "transition", group: 6, period: 6, config: "[Xe] 4f¹⁴ 5d⁴ 6s²" },
       { number: 75, symbol: "Re", name: "Rhenium", ipa: "/ˈriː.ni.əm/", category: "transition", group: 7, period: 6, config: "[Xe] 4f¹⁴ 5d⁵ 6s²" },
-      { number: 76, symbol: "Os", name: "Osmium", ipa: "/ˈɒz.mi.əm/", category: "transition", group: 8, period: 6, config: "[Xe] 4f¹⁴ 5d⁶ 6s²" },
+      { number: 76, symbol: "Os", name: "Osmium", ipa: "/ˈɒz.mi.əm/", category: "transition", group: 8, period: 6, config: "[Xe] 4f¹⁴ 5d   6s²" },
       { number: 77, symbol: "Ir", name: "Iridium", ipa: "/ɪˈrɪd.i.əm/", category: "transition", group: 9, period: 6, config: "[Xe] 4f¹⁴ 5d⁷ 6s²" },
       { number: 78, symbol: "Pt", name: "Platinum", ipa: "/ˈplæt.ɪ.nəm/", category: "transition", group: 10, period: 6, config: "[Xe] 4f¹⁴ 5d⁹ 6s¹" },
       { number: 79, symbol: "Au", name: "Gold", ipa: "/ɡəʊld/", category: "transition", group: 11, period: 6, config: "[Xe] 4f¹⁴ 5d¹⁰ 6s¹" },
@@ -325,27 +325,27 @@
       { number: 91, symbol: "Pa", name: "Protactinium", ipa: "/ˌprəʊ.tækˈtɪn.i.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f² 6d¹ 7s²" },
       { number: 92, symbol: "U", name: "Uranium", ipa: "/jʊˈreɪ.ni.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f³ 6d¹ 7s²" },
       { number: 93, symbol: "Np", name: "Neptunium", ipa: "/nepˈtjuː.ni.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f⁴ 6d¹ 7s²" },
-      { number: 94, symbol: "Pu", name: "Plutonium", ipa: "/pluːˈtəʊ.ni.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f⁶ 7s²" },
-      { number: 95, symbol: "Am", name: "Americium", ipa: "/ˌæm.əˈrɪs.i.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f⁷ 7s²" },
-      { number: 96, symbol: "Cm", name: "Curium", ipa: "/ˈkjʊər.i.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f⁷ 6d¹ 7s²" },
-      { number: 97, symbol: "Bk", name: "Berkelium", ipa: "/ˈbɜːr.kli.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f⁹ 7s²" },
+      { number: 94, symbol: "Pu", name: "Plutonium", ipa: "/pluːˈt  ʊ.ni.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f⁶ 7s²" },
+      { number: 95, symbol: "Am", name: "Americium", ipa: "/ˌæm.əˈr  s.i.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f⁷ 7s²" },
+      { number: 96, symbol: "Cm", name: "Curium", ipa: "/  kjʊər.i.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f⁷ 6d¹ 7s²" },
+      { number: 97, symbol: "Bk", name: "Berkelium", ipa: "/ˈbɜ  r.kli.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f⁹ 7s²" },
       { number: 98, symbol: "Cf", name: "Californium", ipa: "/ˌkæl.ɪˈfɔːr.ni.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f¹⁰ 7s²" },
       { number: 99, symbol: "Es", name: "Einsteinium", ipa: "/aɪnˈstaɪ.ni.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f¹¹ 7s²" },
       { number: 100, symbol: "Fm", name: "Fermium", ipa: "/ˈfɜːr.mi.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f¹² 7s²" },
       { number: 101, symbol: "Md", name: "Mendelevium", ipa: "/ˌmen.dəˈliː.vi.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f¹³ 7s²" },
       { number: 102, symbol: "No", name: "Nobelium", ipa: "/nəʊˈbel.i.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f¹⁴ 7s²" },
       { number: 103, symbol: "Lr", name: "Lawrencium", ipa: "/lɔːˈren.si.əm/", category: "actinide", group: 3, period: 7, config: "[Rn] 5f¹⁴ 6d¹ 7s²" },
-      { number: 104, symbol: "Rf", name: "Rutherfordium", ipa: "/ˌrʌð.əˈfɔːr.di.əm/", category: "transition", group: 4, period: 7, config: "[Rn] 5f¹⁴ 6d² 7s²" },
+      { number: 104, symbol: "Rf", name: "Rutherfordium", ipa: "/  rʌð.əˈfɔːr.di.əm/", category: "transition", group: 4, period: 7, config: "[Rn] 5f¹⁴ 6d² 7s²" },
       { number: 105, symbol: "Db", name: "Dubnium", ipa: "/ˈduːb.ni.əm/", category: "transition", group: 5, period: 7, config: "[Rn] 5f¹⁴ 6d³ 7s²" },
       { number: 106, symbol: "Sg", name: "Seaborgium", ipa: "/siːˈbɔːr.ɡi.əm/", category: "transition", group: 6, period: 7, config: "[Rn] 5f¹⁴ 6d⁴ 7s²" },
       { number: 107, symbol: "Bh", name: "Bohrium", ipa: "/ˈbɔːr.i.əm/", category: "transition", group: 7, period: 7, config: "[Rn] 5f¹⁴ 6d⁵ 7s²" },
-      { number: 108, symbol: "Hs", name: "Hassium", ipa: "/ˈhæs.i.əm/", category: "transition", group: 8, period: 7, config: "[Rn] 5f¹⁴ 6d⁶ 7s²" },
+      { number: 108, symbol: "Hs", name: "Hassium", ipa: "/ˈhæs.i.əm/", category: "transition", group: 8, period: 7, config: "[Rn] 5f¹   6d⁶ 7s²" },
       { number: 109, symbol: "Mt", name: "Meitnerium", ipa: "/maɪtˈnɪər.i.əm/", category: "transition", group: 9, period: 7, config: "[Rn] 5f¹⁴ 6d⁷ 7s²" },
       { number: 110, symbol: "Ds", name: "Darmstadtium", ipa: "/dɑːrmˈʃtæt.i.əm/", category: "transition", group: 10, period: 7, config: "[Rn] 5f¹⁴ 6d⁹ 7s¹" },
       { number: 111, symbol: "Rg", name: "Roentgenium", ipa: "/rɒntɡen.i.əm/", category: "transition", group: 11, period: 7, config: "[Rn] 5f¹⁴ 6d¹⁰ 7s¹" },
       { number: 112, symbol: "Cn", name: "Copernicium", ipa: "/ˌkoʊ.pərˈnɪs.i.əm/", category: "transition", group: 12, period: 7, config: "[Rn] 5f¹⁴ 6d¹⁰ 7s²" },
       { number: 113, symbol: "Nh", name: "Nihonium", ipa: "/nɪˈhoʊ.ni.əm/", category: "post-transition", group: 13, period: 7, config: "[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p¹" },
-      { number: 114, symbol: "Fl", name: "Flerovium", ipa: "/flɛˈroʊ.vi.əm/", category: "post-transition", group: 14, period: 7, config: "[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p²" },
+      { number: 114, symbol: "Fl", name: "Flerovium", ipa: "/fl  ˈroʊ.vi.əm/", category: "post-transition", group: 14, period: 7, config: "[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p  " },
       { number: 115, symbol: "Mc", name: "Moscovium", ipa: "/mɒsˈkoʊ.vi.əm/", category: "post-transition", group: 15, period: 7, config: "[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p³" },
       { number: 116, symbol: "Lv", name: "Livermorium", ipa: "/ˌlɪv.ərˈmɔːr.i.əm/", category: "post-transition", group: 16, period: 7, config: "[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁴" },
       { number: 117, symbol: "Ts", name: "Tennessine", ipa: "/ˈten.ə.siːn/", category: "halogen", group: 17, period: 7, config: "[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁵" },
@@ -819,7 +819,7 @@
                class="periodic-cell ${getCategoryClass(el.category)} ${opacity} rounded-lg p-1 text-center cursor-pointer relative"
                style="grid-row: ${pos.row}; grid-column: ${pos.col};">
             <div class="text-xs text-white/70">${el.number}</div>
-            <div class="font-display font-bold text-sm md:text-base text-white">${el.symbol}</div>
+            <div style="font-family: 'Times New Roman', serif;" class="font-bold text-sm md:text-base text-white">${el.symbol}</div>
             <div class="text-xs text-white/80 hidden md:block truncate">${el.name}</div>
           </div>
         `;
@@ -918,5 +918,5 @@
 
     applyConfig();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ca39bc6a7888696',t:'MTc3MDQ3NDg3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ca3b9e0f2700ebc',t:'MTc3MDQ3NjEwNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
